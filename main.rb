@@ -1,5 +1,5 @@
 require_relative 'enumerable.rb'
-my_array = [2, 6, 4, 6, 8]
+my_array = [2, 6, 4, 6, 8, 5, 9, 3]
 my_hash = { 'Jane Doe' => 10, 'Jim Doe' => 6 }
 my_range = (10..15)
 
@@ -18,7 +18,7 @@ my_range = (10..15)
 ####### test cases for my_select #########
 # p my_array.my_select { |i| i.even? }
 # p my_range.my_select { |i| i.even? }
-# my_hash.my_select { |i , j| p j.even? }# j here is the value
+my_hash.my_select { |i , j| p j.even? }# j here is the value
 
 ##########################################
 
