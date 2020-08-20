@@ -1,6 +1,6 @@
 require_relative 'enumerable.rb'
-my_array = [2, 6, 4, 6, 8, 5, 9, 3]
-my_hash = { 'Jane Doe' => 10, 'Jim Doe' => 6 }
+my_array = [2, 6, 4, 6, 8, 3]
+my_hash = { 'Jane Doe' => 10, 'Jim Doe' => 6, 'Jim Ping' => 3 }
 my_range = (10..15)
 
 ####### test cases for my_each ###########
@@ -16,19 +16,21 @@ my_range = (10..15)
 ##########################################
 
 ####### test cases for my_select #########
+# p my_array.my_select
 # p my_array.my_select { |i| i.even? }
 # p my_range.my_select { |i| i.even? }
-my_hash.my_select { |i , j| p j.even? }# j here is the value
+# my_hash.my_select { |i , j| p j.even? } # j here is the value
 
 ##########################################
 
 ####### test cases for my_all? ###########
+p my_array.my_all?
 # p my_array.my_all? { |i| i.even? }
 # p my_range.my_all? { |i| i.even? }
-# p my_hash.my_all? { |i, j| j.even? }# j here is the value
-# p res = ['apple', 'orange'].my_all?
-# p ['Gurbuz', 'Turkiye', 'uretim'].my_all?(/u/)
-# p ['Gurbuz', 'Turkiye', 'kretim'].my_all?(/v/)
+# p my_hash.my_all? { |i, j| j.even? }
+# p res = ['apple', 'oradnge'].my_all?
+# p ['Namueua', 'Testua', 'Bluah'].my_all?(/ua/)
+# p ['Aaaa', 'Eeee', 'Asds'].my_all?(/v/)
 ##########################################
 
 ####### test cases for my_any? ###########
