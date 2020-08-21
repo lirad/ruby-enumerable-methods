@@ -28,23 +28,16 @@ module Enumerable
   end
 
   def my_all?(obj = nil)
-    return true unless obj.nil? && block_given?
-
+    return true if obj.nil? && !block_given?
     result = true
     if obj.nil?
-      my_each do |i|
-        unless yield(i)
-          break result = false if yield(i) == false
-        end
-      end
+      my_each { |i| return !result unless yield(i) }
     elsif !obj.nil?
-      my_each do |i|
-        unless i.match?(obj)
-          result = false
-          break
-        end
-      end
+      my_each { |i| return !result unless i.match?(obj) }
     end
     result
   end
 end
+
+
+

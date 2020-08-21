@@ -1,6 +1,6 @@
 require_relative 'enumerable.rb'
-my_array = [2, 6, 4, 6, 8, 3]
-my_hash = { 'Jane Doe' => 10, 'Jim Doe' => 6, 'Jim Ping' => 3 }
+my_array = [2, 6, 4, 6, 8]
+my_hash = { 'Jane Doe' => 10, 'Jim Doe' => 6, 'Jim Ping' => 2 }
 my_range = (10..15)
 
 ####### test cases for my_each ###########
@@ -24,24 +24,24 @@ my_range = (10..15)
 ##########################################
 
 ####### test cases for my_all? ###########
-p my_array.my_all?
+# p my_array.my_all?
 # p my_array.my_all? { |i| i.even? }
 # p my_range.my_all? { |i| i.even? }
 # p my_hash.my_all? { |i, j| j.even? }
 # p res = ['apple', 'oradnge'].my_all?
-# p ['Namueua', 'Testua', 'Bluah'].my_all?(/ua/)
-# p ['Aaaa', 'Eeee', 'Asds'].my_all?(/v/)
+# p %w[Namueua Testua Blusadaha].my_all?(/ua/)
 ##########################################
 
 ####### test cases for my_any? ###########
-# p my_array.my_any? { |i| i.odd? }
+# p my_array.any? { |i| i.odd? }
+p my_array.any?
 # p my_range.my_any? { |i| i.even? }
 # p my_hash.my_any? { |i, j| j.odd? }# j here is the value
 # p my_array.my_any?(3)
 # p my_range.my_any?(11)
 # p my_hash.my_any?(4)
 # p res = ['apple', 'orange'].my_any?
-# p ['Gurbuz', 'Turkiye', 'uretim'].my_any?(/u/)
+p ['Gurbuz', 'Turkiye', 'uretim'].my_any?(/u/)
 # p ['Gurbuz', 'Turkiye', 'kretim'].my_any?(/v/)
 ##########################################
 
