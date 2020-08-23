@@ -29,6 +29,7 @@ module Enumerable
 
   def my_all?(obj = nil)
     return true if obj.nil? && !block_given?
+
     result = true
     if obj.nil?
       my_each { |i| return !result unless yield(i) }
@@ -37,7 +38,17 @@ module Enumerable
     end
     result
   end
+
+  def my_any?(obj = nil)
+    return true if obj.nil? && !block_given?
+
+    result = false
+    if obj.nil?
+      my_each { |i| break result = true if yield(i)}
+    elsif !obj.nil?  
+      my_each {|i| break result = true if i.match?(obj) }
+      
+    end
+    result
+  end
 end
-
-
-

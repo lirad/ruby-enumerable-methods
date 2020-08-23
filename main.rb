@@ -1,7 +1,7 @@
 require_relative 'enumerable.rb'
-my_array = [2, 6, 4, 6, 8]
-my_hash = { 'Jane Doe' => 10, 'Jim Doe' => 6, 'Jim Ping' => 2 }
-my_range = (10..15)
+my_array = [2, 6, 2, 6, 8, 2, 3]
+my_hash = { 'Jane Doe' => 10, 'Jim Doe' => 6, 'Jim Ping' => 3 }
+my_range = (1..15)
 
 ####### test cases for my_each ###########
 # p my_array.my_each { |i|  i }
@@ -33,15 +33,15 @@ my_range = (10..15)
 ##########################################
 
 ####### test cases for my_any? ###########
-# p my_array.any? { |i| i.odd? }
-p my_array.any?
+# p my_array.my_any? { |i| i.odd? }
+# p my_array.any?
 # p my_range.my_any? { |i| i.even? }
 # p my_hash.my_any? { |i, j| j.odd? }# j here is the value
 # p my_array.my_any?(3)
 # p my_range.my_any?(11)
 # p my_hash.my_any?(4)
-# p res = ['apple', 'orange'].my_any?
-p ['Gurbuz', 'Turkiye', 'uretim'].my_any?(/u/)
+p res = ['apple', 'orange'].my_any?
+# p ['Gurbuz', 'Turkiye', 'uretim'].my_any?(/ua/)
 # p ['Gurbuz', 'Turkiye', 'kretim'].my_any?(/v/)
 ##########################################
 
