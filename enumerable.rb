@@ -111,4 +111,4 @@ end
 def multiply_els(arr)
   arr.my_inject(:*)
 end
-# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength,Metrics/MethodLength
+# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
