@@ -47,8 +47,40 @@ module Enumerable
       my_each { |i| break result = true if yield(i)}
     elsif !obj.nil?  
       my_each {|i| break result = true if i.match?(obj) }
-      
     end
     result
+  end
+
+  def my_none?(obj = nil)
+    return true if obj.nil? && !block_given?
+
+    result = true
+    if obj.nil?
+      my_each { |i| break result = false if yield(i)}
+    elsif !obj.nil?  
+      my_each {|i| break result = false if i.match?(obj) }
+    end
+    result
+  end
+
+  def my_count(obj = nil)
+    
+    counter = 0
+    if obj.nil? && !block_given?
+      my_each { |i| counter +=1 }
+    elsif block_given?
+      my_each { |i| counter +=1  if yield(i) }
+    end
+
+    counter
+  end  
+
+  def my_map(_array = nil)
+    return to_enum unless block_given?
+    newArray = []
+    my_each do |i|
+      newArray.push(yield(i))
+    end  
+    newArray
   end
 end

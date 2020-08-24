@@ -1,7 +1,8 @@
 require_relative 'enumerable.rb'
-my_array = [2, 6, 2, 6, 8, 2, 3]
-my_hash = { 'Jane Doe' => 10, 'Jim Doe' => 6, 'Jim Ping' => 3 }
-my_range = (1..15)
+my_array = [2, 6, 2, 6, 8, 2, 2]
+my_strings = %w[banana apple orange]
+my_hash = { 'Jane Doe' => 10, 'Jim Doe' => 6, 'Jim Ping' => 2}
+my_range = (10..15)
 
 ####### test cases for my_each ###########
 # p my_array.my_each { |i|  i }
@@ -40,7 +41,7 @@ my_range = (1..15)
 # p my_array.my_any?(3)
 # p my_range.my_any?(11)
 # p my_hash.my_any?(4)
-p res = ['apple', 'orange'].my_any?
+# p res = ['apple', 'orange'].my_any?
 # p ['Gurbuz', 'Turkiye', 'uretim'].my_any?(/ua/)
 # p ['Gurbuz', 'Turkiye', 'kretim'].my_any?(/v/)
 ##########################################
@@ -53,7 +54,7 @@ p res = ['apple', 'orange'].my_any?
 # p my_range.my_none?(11)
 # p my_hash.my_none?(4)
 # p res = ['apple', 'orange'].my_none?
-# p ['Gurbuz', 'Turkiye', 'uretim'].my_none?(/u/)
+# p ['Gurbuz', 'Turkiye', 'uretim'].my_none?(/ua/)
 # p ['Gurbuz', 'Turkiye', 'kretim'].my_none?(/v/)
 ##########################################
 
@@ -63,16 +64,21 @@ p res = ['apple', 'orange'].my_any?
 # p my_hash.my_count
 # p my_array.my_count(3)
 # p my_range.my_count(11)
-# p my_hash.my_count(4)
-# p (res = ['apple', 'dante', 'cherry'].my_count do |element| element == 'apple' end)
+# p my_hash.count
+# p (res = ['apple', 'dante', 'cherry'].count do |element| element == 'apple' end)
 ##########################################
 
 ####### test cases for my_map #########
 # p my_array.my_map {|i| i * i}
+# p my_array.each {|i| i * i}
 # p [2, 6, 4, 6, 8].my_map{|i| i * i}
 # proc = Proc.new {|i| i**2}
-# p my_array.my_map(&proc)
+# p my_array.map(&proc)
 # p my_array.my_map {|i| i**2}
+# p my_hash.map {|i, j| j**2}
+# p my_range.map {|i| i*2}
+# p my_strings.my_map{|i| i.match('a')} 
+# p my_strings.map(/n/)
 # p my_array.my_map
 ##########################################
 
