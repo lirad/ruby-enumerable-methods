@@ -1,10 +1,9 @@
 # Bubble Sort
 
-> For this project, we created two **sorting algorithms** that use the [bubble sort](https://en.wikipedia.org/wiki/Bubble_sort) method.
+> For this project, we created ten **enumerables for series of arrays** that use the block method.
 
 This side-by-side comparative method is seen in the GIF image below.
 
-> The second bubble sort method sorts an array of strings by the length of each element using the "yield" keyword and a code block.
 
 ## Built With
 
@@ -14,7 +13,7 @@ This side-by-side comparative method is seen in the GIF image below.
 
 ## Live Demo
 
-To quickly see our project in action, visit the [live demo](https://repl.it/@lirad/ruby-bubble-sort) on repl.it.
+To quickly see our project in action, visit the [live demo](https://repl.it/join/dhwinddt-akintoyeolamide) on repl.it.
 
 ## Getting Started
 
@@ -29,12 +28,12 @@ To get this project up and running, you must already have ruby installed on your
 1. Open Terminal.
 2. Navigate to your desired location to download the contents of this repository.
 3. Copy and paste the following code into the Terminal:
-    git clone https://github.com/lirad/ruby-bubble-sort.git
+    git clone https://github.com/lirad/enumerables.git
 4. Hit enter.
 5. Once the repository has been cloned, navigate inside the repository and type:
     ruby bubble_sort.rb
     This will run the code, printing the output of our tests to the terminal.
-6. To change those tests, simply open bubble_sort.rb in a code editor and modify the values stored in the test_array and test_run variables.
+6. To change those tests, simply open enumerables.rb in a code editor and modify the values stored in the test_array and test_run variables.
 6. Enjoy sorted arrays of data for the rest of your life.
 
 ## Authors
