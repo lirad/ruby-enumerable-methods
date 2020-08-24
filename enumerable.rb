@@ -111,4 +111,9 @@ end
 def multiply_els(arr)
   arr.my_inject(:*)
 end
+<<<<<<< HEAD
 # rubocop:enable,Metrics/MethodLength
+=======
+
+# rubocop:enable
+>>>>>>> 0a494ba78837f6918f99a22958efd5e03b33fb45
