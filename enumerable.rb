@@ -44,9 +44,9 @@ module Enumerable
 
     result = false
     if obj.nil?
-      my_each { |i| break result = true if yield(i)}
-    elsif !obj.nil?  
-      my_each {|i| break result = true if i.match?(obj) }
+      my_each { |i| break result = true if yield(i) }
+    elsif !obj.nil?
+      my_each { |i| break result = true if i.match?(obj) }
     end
     result
   end
@@ -56,36 +56,37 @@ module Enumerable
 
     result = true
     if obj.nil?
-      my_each { |i| break result = false if yield(i)}
-    elsif !obj.nil?  
-      my_each {|i| break result = false if i.match?(obj) }
+      my_each { |i| break result = false if yield(i) }
+    elsif !obj.nil?
+      my_each { |i| break result = false if i.match?(obj) }
     end
     result
   end
 
   def my_count(obj = nil)
-    
     counter = 0
     if obj.nil? && !block_given?
-      my_each { |i| counter +=1 }
+      my_each { |_i| counter += 1 }
     elsif block_given?
-      my_each { |i| counter +=1  if yield(i) }
+      my_each { |i| counter += 1 if yield(i) }
     end
 
     counter
-  end  
+  end
 
   def my_map(_array = nil)
     return to_enum unless block_given?
-    newArray = []
+
+    new_array = []
     my_each do |i|
-      newArray.push(yield(i))
-    end  
-    newArray
+      new_array.push(yield(i))
+    end
+    new_array
   end
 
   def my_inject(obj = nil)
     raise('Block or argument missing!') if !block_given? && obj.nil?
+
     if obj.nil?
       n = length - 1
       accumlator = yield(self[0])
@@ -109,3 +110,5 @@ end
 def multiply_els(arr)
   arr.my_inject(:*)
 end
+
+# rubocop:enable
