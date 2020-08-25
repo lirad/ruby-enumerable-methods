@@ -29,7 +29,7 @@ module Enumerable
   end
 
   def my_all?(obj = nil)
-    return true if obj.nil? && !block_given?
+    return false if obj.nil? && !block_given?
 
     result = true
     if obj.nil?
@@ -41,25 +41,25 @@ module Enumerable
   end
 
   def my_any?(obj = nil)
-    return true if obj.nil? && !block_given?
+    return false if obj.nil? && !block_given?
 
-    result = false
+    result = true
     if obj.nil?
-      my_each { |i| break result = true if yield(i) }
+      my_each { |i| break result unless yield(i) }
     elsif !obj.nil?
-      my_each { |i| break result = true if i.match?(obj) }
+      my_each { |i| break result unless i.match?(obj) }
     end
     result
   end
 
   def my_none?(obj = nil)
-    return true if obj.nil? && !block_given?
+    return if false obj.nil? && !block_given?
 
     result = true
     if obj.nil?
-      my_each { |i| break result = false if yield(i) }
+      my_each { |i| break result = unless yield(i) }
     elsif !obj.nil?
-      my_each { |i| break result = false if i.match?(obj) }
+      my_each { |i| break result = unless i.match?(obj) }
     end
     result
   end
@@ -67,12 +67,11 @@ module Enumerable
   def my_count(obj = nil)
     counter = 0
     if obj.nil? && !block_given?
-      my_each { |_i| counter += 1 }
+      my_each { |i| counter += 1 }
     elsif block_given?
       my_each { |i| counter += 1 if yield(i) }
     end
-
-    counter
+    return counter
   end
 
   def my_map(_array = nil)
@@ -86,27 +85,18 @@ module Enumerable
   end
 
   def my_inject(obj = nil)
-    raise('Block or argument missing!') if !block_given? && obj.nil?
+    
 
-    if obj.nil?
-      n = length - 1
-      accumlator = yield(self[0])
-      n.times do |i|
-        accumlator = if i.zero?
-                       yield(self[0])
-                     else
-                       yield(accumlator)
-                     end
-      end
-    else
-      accumlator = 1
-      my_each_with_index do |item, _index|
-        accumlator = accumlator.send(obj[0], item)
-      end
-    end
-    accumlator
+    def my_inject(start = self[0])
+      raise('LocalJumpError') if !block_given? && obj.nil?
+      self.my_each { |i|
+          start = yield(start, i)
+      }
+      start
   end
 end
+
+puts [2,4,5].my_inject(0) {|t, i| t + i}
 
 def multiply_els(arr)
   arr.my_inject(:*)
