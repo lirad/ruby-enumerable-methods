@@ -29,13 +29,15 @@ module Enumerable
   end
 
   def my_all?(obj = nil)
-    return true if obj.nil? && !block_given?
-
+    return false if obj.nil? && !block_given?
     result = true
+    
     if obj.nil?
       my_each { |i| return !result unless yield(i) }
-    elsif !obj.nil?
+    elsif obj.is_a? String
       my_each { |i| return !result unless i.match?(obj) }
+    elsif obj.is_a? Integer
+      my_each { |i| return !result unless i == obj }
     end
     result
   end
