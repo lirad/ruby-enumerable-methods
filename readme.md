@@ -1,8 +1,6 @@
-# Bubble Sort
+# Ruby Enummerables
 
-> For this project, we created ten **enumerables for series of arrays** that use the block method.
-
-This side-by-side comparative method is seen in the GIF image below.
+This project was built as an Ruby exercise. The goal is to replicate the main Enumerables used in Ruby such as each, select, map and others.
 
 
 ## Built With
@@ -13,7 +11,7 @@ This side-by-side comparative method is seen in the GIF image below.
 
 ## Live Demo
 
-To quickly see our project in action, visit the [live demo](https://repl.it/join/dhwinddt-akintoyeolamide) on repl.it.
+To quickly see our project in action, visit the [live demo](https://repl.it/@lirad/ruby-enumerable-methods) on repl.it.
 
 ## Getting Started
 
