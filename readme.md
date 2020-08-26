@@ -1,11 +1,11 @@
-# Ruby Enummerables
+# Ruby Enumerables
 
-This project was built as an Ruby exercise. The goal is to replicate the main Enumerables used in Ruby such as each, select, map and others.
+This project is part of the Odin Project Ruby excercise. The goal is to replicate the main Enumerables used in Ruby such as each, select, inject, map and, others.
 
 
 ## Built With
 
-- Ruby
+- Rub
 - VSCode
 - Rubocop
 
