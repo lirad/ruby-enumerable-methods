@@ -25,13 +25,14 @@ module Enumerable
     my_each do |item|
       result.push(item) if yield(item)
     end
-    result
+    puts result
   end
 
   def my_all?(obj = nil)
     return false if obj.nil? && !block_given?
+
     result = true
-    
+
     if obj.nil?
       my_each { |i| return !result unless yield(i) }
     elsif obj.is_a? String
@@ -45,23 +46,27 @@ module Enumerable
   def my_any?(obj = nil)
     return false if obj.nil? && !block_given?
 
-    result = true
+    result = false
     if obj.nil?
-      my_each { |i| break result unless yield(i) }
-    elsif !obj.nil?
-      my_each { |i| break result unless i.match?(obj) }
+      my_each { |i| return !result if yield(i) }
+    elsif obj.is_a? String
+      my_each { |i| return !result if obj.match?(i) }
+    elsif obj.is_a? Integer
+      my_each { |i| return !result if i == obj }
     end
     result
   end
 
   def my_none?(obj = nil)
-    return if false obj.nil? && !block_given?
+    return false if obj.nil? && !block_given?
 
     result = true
     if obj.nil?
-      my_each { |i| break result = unless yield(i) }
-    elsif !obj.nil?
-      my_each { |i| break result = unless i.match?(obj) }
+      my_each { |i| return !result if yield(i) }
+    elsif obj.is_a?(String) && !is_a?(Range)
+      my_each { |i| return !result if i.match?(obj) }
+    elsif obj.is_a? Integer
+      my_each { |i| return !result if i == obj }
     end
     result
   end
@@ -69,11 +74,15 @@ module Enumerable
   def my_count(obj = nil)
     counter = 0
     if obj.nil? && !block_given?
-      my_each { |i| counter += 1 }
-    elsif block_given?
+      my_each { |_i| counter += 1 }
+    elsif obj.nil? && block_given?
       my_each { |i| counter += 1 if yield(i) }
+    elsif obj.is_a? Integer
+      my_each { |i| counter += 1 if i == obj }
+    elsif obj.is_a? String
+      my_each { |i| counter += 1 if i.match?(obj) }
     end
-    return counter
+    counter
   end
 
   def my_map(_array = nil)
@@ -86,21 +95,35 @@ module Enumerable
     new_array
   end
 
-  def my_inject(obj = nil)
-    
+  def my_inject(*obj)
+    raise('LocalJumpError: Block or argument missing!') if !block_given? && obj.nil?
 
-    def my_inject(start = self[0])
-      raise('LocalJumpError') if !block_given? && obj.nil?
-      self.my_each { |i|
-          start = yield(start, i)
-      }
-      start
+    result = Array(self)[0]
+
+    is_symbol = false
+    if (obj[0].class == Symbol) || obj[0].nil?
+      is_symbol = true
+    elsif obj[0].is_a? Numeric
+      result = obj[0]
+    end
+
+    Array(self).my_each_with_index do |item, index|
+      next if is_symbol && index.zero?
+
+      if block_given?
+        result = yield(result, item)
+      elsif obj[0].is_a? Numeric
+        result = result.send(obj[1], item)
+      elsif obj[0].class == Symbol
+        result = result.send(obj[0], item)
+      end
+    end
+    result
   end
 end
-
-puts [2,4,5].my_inject(0) {|t, i| t + i}
 
 def multiply_els(arr)
   arr.my_inject(:*)
 end
+
 # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
