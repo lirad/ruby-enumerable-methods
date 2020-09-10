@@ -20,11 +20,12 @@ module Enumerable
 
   def my_select
     return to_enum unless block_given?
+
     result = []
     my_each do |item|
       result.push(item) if yield(item)
     end
-     result
+    result
   end
 
   def my_all?(obj = nil)
@@ -39,7 +40,7 @@ module Enumerable
     elsif obj.is_a? Integer
       my_each { |i| return !result unless i == obj }
     elsif obj.is_a? Array
-      return !result unless obj.sort == self.sort
+      return !result unless obj.sort == sort
     end
     result
   end
@@ -75,24 +76,24 @@ module Enumerable
   def my_count(obj = nil)
     counter = 0
     if obj.nil? && !block_given?
-      my_each { |i| counter += 1 }
+      my_each { |_i| counter += 1 }
     elsif obj.nil? && block_given?
       my_each { |i| counter += 1 if yield(i) }
     elsif obj.is_a? Integer
       my_each { |i| counter += 1 if i == obj }
     elsif obj.is_a? String
       my_each { |i| counter += 1 if i.match?(obj) }
-    
     end
     counter
   end
 
-  def my_map(_array = nil)
+  def my_map(_obj = nil)
     return to_enum unless block_given?
 
     new_array = []
     my_each do |i|
-      new_array.push(yield(i))
+      n = yield(i)
+      new_array.push(n)
     end
     new_array
   end
@@ -124,11 +125,12 @@ module Enumerable
   end
 end
 
-def multiply_els(arr)
-  arr.my_inject(:*)
-end
+class Multiply
+  def initialize; end
 
-# print ([1,2,3]).my_map
-print ([1,2,3]).map
+  def multiply_els(arr)
+    arr.my_inject(:*)
+  end
+end
 
 # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
