@@ -20,12 +20,11 @@ module Enumerable
 
   def my_select
     return to_enum unless block_given?
-
     result = []
     my_each do |item|
       result.push(item) if yield(item)
     end
-    puts result
+     result
   end
 
   def my_all?(obj = nil)
@@ -39,6 +38,8 @@ module Enumerable
       my_each { |i| return !result unless i.match?(obj) }
     elsif obj.is_a? Integer
       my_each { |i| return !result unless i == obj }
+    elsif obj.is_a? Array
+      return !result if obj.sort == self.sort
     end
     result
   end
@@ -125,5 +126,8 @@ end
 def multiply_els(arr)
   arr.my_inject(:*)
 end
+
+# print ([1,2,3]).my_map
+print ([1,2,3]).map
 
 # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
