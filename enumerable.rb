@@ -39,7 +39,7 @@ module Enumerable
     elsif obj.is_a? Integer
       my_each { |i| return !result unless i == obj }
     elsif obj.is_a? Array
-      return !result if obj.sort == self.sort
+      return !result unless obj.sort == self.sort
     end
     result
   end
@@ -75,13 +75,14 @@ module Enumerable
   def my_count(obj = nil)
     counter = 0
     if obj.nil? && !block_given?
-      my_each { |_i| counter += 1 }
+      my_each { |i| counter += 1 }
     elsif obj.nil? && block_given?
       my_each { |i| counter += 1 if yield(i) }
     elsif obj.is_a? Integer
       my_each { |i| counter += 1 if i == obj }
     elsif obj.is_a? String
       my_each { |i| counter += 1 if i.match?(obj) }
+    
     end
     counter
   end

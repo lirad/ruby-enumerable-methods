@@ -54,13 +54,13 @@ describe Enumerable do
    
     it "Checks if a element is selected from array" do
       result = array_integers.my_select { |n| n > 9 }  
-      compare = array_integers.select { |n| n > 9 }  
+      compare = [10]
       expect(result).to eq(compare)
     end
 
     it "Checks if a element is selected from array of strings" do
       result = array_strings.my_select { |n| n == 'John'}
-      compare = array_strings.select { |n| n == 'John'}
+      compare = ['John']
       expect(result).to eq(compare)
     end
 
@@ -71,11 +71,62 @@ describe Enumerable do
     end
   end
 
-  describe "#my-all?" do
-    it "Checks for true if all elements matchs the condition" do
+  describe "#my_all?" do
+    it "Checks for true if all elements matchs all the conditions" do
       result = array_strings.my_all?(array_strings)
-      compare = array_strings.all?(array_strings)
+      expect(result).to eq(true)
+    end
+    
+    it "Checks for false if all the conditions are not met" do
+      result = array_strings.my_all?(%w[John Mary Douglas])
+      expect(result).to eq(false)
+    end
+
+  end
+
+  describe "#my_any?" do
+    it "Checks if returns true if any of the conditions are met" do
+      result = array_strings.my_any?('John')
+      compare = array_strings.any?('John')
       expect(result).to eq(compare)
+    end
+    it "Checks if returns false if none of the conditions are met" do
+      result = array_strings.my_any?('Pedro')
+      compare = array_strings.any?('Pedro')
+      expect(result).to eq(compare)
+    end
+  end
+
+  describe "#my_none?" do
+    it "Checks if returns true if none of the conditions are met" do
+      result = array_strings.my_none?('Pedro')
+      expect(result).to eq(true)
+    end
+    
+    it "Checks if returns false if any of the conditions are met" do
+      result = array_strings.my_none?('John')
+      expect(result).to eq(false)
+    end
+  end
+
+  describe "#my_count" do
+    it "Check if number of elements is equal to the passed object" do
+      result = array_integers.my_count
+      compare = array_integers.length
+      expect(result).to eq(compare)
+    end
+
+    it "Check if number of elements is equal to the passed conditon" do
+      result = array_strings.my_count { |n| n == 'John'}
+      compare = 1
+      expect(result).to eq(compare)
+    end
+
+  end
+
+  describe "#my_map" do
+    it "Check if my map modifies the passed array" do
+      
     end
   end
 
