@@ -28,18 +28,24 @@ module Enumerable
   end
 
   def my_all?(obj = nil)
-    return false if obj.nil? && !block_given?
-
     result = true
 
     if obj.nil?
       my_each { |i| return !result unless yield(i) }
+    elsif !obj.nil? && obj.is_a?(Class)
+      my_each { |i| return !result if i.is_a?(arg) }
     elsif obj.is_a? String
       my_each { |i| return !result unless i.match?(obj) }
     elsif obj.is_a? Integer
       my_each { |i| return !result unless i == obj }
+    elsif !obj.nil? && obj.is_a?(Regexp) || obj.is_a?(String)
+      my_each { |i| return !result if i.match(obj) }
     elsif obj.is_a? Array
       return !result unless obj.sort == sort
+    elsif !block_given?
+      my_each { |i| return !result unless i.nil? || !i }
+    elsif block_given?
+      my_each { |i| return !result if yield(i) }
     end
     result
   end
@@ -50,17 +56,23 @@ module Enumerable
     result = false
     if obj.nil?
       my_each { |i| return !result if yield(i) }
+    elsif !obj.nil? && obj.is_a?(Class)
+      my_each { |i| return !result if i.is_a?(arg) }
     elsif obj.is_a? String
       my_each { |i| return !result if obj.match?(i) }
     elsif obj.is_a? Integer
       my_each { |i| return !result if i == obj }
+    elsif !obj.nil? && obj.is_a?(Regexp) || obj.is_a?(String)
+      my_each { |i| return !result if i.match(obj) }
+    elsif !block_given?
+      my_each { |i| return !result unless i.nil? || !i }
+    elsif block_given?
+      my_each { |i| return !result if yield(i) }
     end
     result
   end
 
   def my_none?(obj = nil)
-    return false if obj.nil? && !block_given?
-
     result = true
     if obj.nil?
       my_each { |i| return !result if yield(i) }
@@ -68,6 +80,10 @@ module Enumerable
       my_each { |i| return !result if i.match?(obj) }
     elsif obj.is_a? Integer
       my_each { |i| return !result if i == obj }
+    elsif !block_given?
+      my_each { |i| return !result unless i.nil? || !i }
+    elsif block_given?
+      my_each { |i| return !result if yield(i) }
     end
     result
   end
@@ -87,18 +103,15 @@ module Enumerable
   end
 
   def my_map(_obj = nil)
-    return to_enum unless block_given?
+    return to_enum unless block_given? || proc
 
     new_array = []
-    my_each do |i|
-      n = yield(i)
-      new_array.push(n)
-    end
+    proc ? my_each { |i| new_array << proc.call(i) } : my_each { |i| new_array << yield(i) }
     new_array
   end
 
   def my_inject(*obj)
-    raise('LocalJumpError: Block or argument missing!') if !block_given? && obj.nil?
+    raise 'LocalJumpError: Block or argument missing!' if !block_given? && obj[0].nil?
 
     result = Array(self)[0]
 
