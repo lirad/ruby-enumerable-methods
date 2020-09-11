@@ -30,20 +30,16 @@ module Enumerable
   def my_all?(obj = nil)
     result = true
 
-    if obj.nil?
-      my_each { |i| return !result unless yield(i) }
+    if obj.nil? && !block_given?
+      my_each { |i| return !result if i.nil? || !i }
     elsif !obj.nil? && obj.is_a?(Class)
       my_each { |i| return !result if i.is_a?(arg) }
-    elsif obj.is_a? String
-      my_each { |i| return !result unless i.match?(obj) }
     elsif obj.is_a? Integer
       my_each { |i| return !result unless i == obj }
     elsif !obj.nil? && obj.is_a?(Regexp) || obj.is_a?(String)
-      my_each { |i| return !result if i.match(obj) }
+      my_each { |i| return !result unless i.match(obj) }
     elsif obj.is_a? Array
       return !result unless obj.sort == sort
-    elsif !block_given?
-      my_each { |i| return !result unless i.nil? || !i }
     elsif block_given?
       my_each { |i| return !result if yield(i) }
     end
@@ -51,11 +47,9 @@ module Enumerable
   end
 
   def my_any?(obj = nil)
-    return false if obj.nil? && !block_given?
-
     result = false
-    if obj.nil?
-      my_each { |i| return !result if yield(i) }
+    if obj.nil? && !block_given?
+      my_each { |i| return !result if i == true }
     elsif !obj.nil? && obj.is_a?(Class)
       my_each { |i| return !result if i.is_a?(arg) }
     elsif obj.is_a? String
@@ -64,8 +58,6 @@ module Enumerable
       my_each { |i| return !result if i == obj }
     elsif !obj.nil? && obj.is_a?(Regexp) || obj.is_a?(String)
       my_each { |i| return !result if i.match(obj) }
-    elsif !block_given?
-      my_each { |i| return !result unless i.nil? || !i }
     elsif block_given?
       my_each { |i| return !result if yield(i) }
     end
@@ -74,14 +66,14 @@ module Enumerable
 
   def my_none?(obj = nil)
     result = true
-    if obj.nil?
-      my_each { |i| return !result if yield(i) }
+    if obj.nil? && !block_given?
+      my_each { |i| return !result unless i.nil? || !i }
     elsif obj.is_a?(String) && !is_a?(Range)
       my_each { |i| return !result if i.match?(obj) }
     elsif obj.is_a? Integer
       my_each { |i| return !result if i == obj }
-    elsif !block_given?
-      my_each { |i| return !result unless i.nil? || !i }
+    elsif !obj.nil? && obj.is_a?(Regexp) || obj.is_a?(String)
+      my_each { |i| return !result if i.match(obj) }
     elsif block_given?
       my_each { |i| return !result if yield(i) }
     end

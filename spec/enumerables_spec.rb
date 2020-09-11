@@ -2,8 +2,12 @@ require './enumerable.rb'
 
 describe Enumerable do
   let(:array_integers) { (1..10).to_a }
+  let(:array_integers_false) { (1..9).to_a }
   let(:array_strings) { %w[John Mary Douglas Michael] }
+  let(:array_strings_false) { %w[John Mary Douglas] }
   let(:array_reduced) { 3_628_800 }
+  let(:true_array) { [1, true, 'hi', []] }
+  let(:false_array) { [1, false, 'hi', []] }
   let(:hash) { [{ 'Michael' => 2 }, { 'John' => 3 }] }
   let(:result) { [] }
   let(:compare) { [] }
@@ -69,39 +73,110 @@ describe Enumerable do
   end
 
   describe '#my_all?' do
-    it 'Checks for true if all elements matchs all the conditions' do
-      result = array_strings.my_all?(array_strings)
+    it 'Checks for true if all elements in a integer array matchs all the conditions' do
+      result = array_integers.my_all?(array_integers.all?)
       expect(result).to eq(true)
     end
 
-    it 'Checks for false if all the conditions are not met' do
-      result = array_strings.my_all?(%w[John Mary Douglas])
+    it 'Checks for false if all elements in a integer arrays matchs all the conditions' do
+      result = array_integers.my_all?(array_integers_false)
       expect(result).to eq(false)
+    end
+
+    it 'Checks for true if all elements string arrays matchs all the conditions' do
+      result = array_strings.my_all?(array_strings.all?)
+      expect(result).to eq(true)
+    end
+
+    it 'Checks for false if all the string arrays conditions are not met' do
+      result = array_strings.my_all?(array_strings_false)
+      expect(result).to eq(false)
+    end
+
+    it 'Checks for regex for true' do
+      expect(['diego'].my_all?(/diego/)).to eq(true)
+    end
+
+    it 'Checks for regex for false' do
+      expect(['diego'].my_all?(/diegodiego/)).to eq(false)
+    end
+
+    it 'Checks true if no blocks or argument is given and at least one element is true' do
+      expect(true_array.my_all?).to eq(true)
+    end
+
+    it 'Checks false if no blocks or argument is given and at least one element is false' do
+      expect(false_array.my_all?).to eq(false)
     end
   end
 
   describe '#my_any?' do
-    it 'Checks if returns true if any of the conditions are met' do
+    it 'Checks for true if any elements in a integer array exists' do
+      result = array_integers.my_any?(1)
+      expect(result).to eq(true)
+    end
+
+    it 'Checks for false none of elements exists in a integer array' do
+      result = array_integers.my_any?(11)
+      expect(result).to eq(false)
+    end
+
+    it 'Checks for true if any elements in a string of arrays matchs any of the conditions' do
       result = array_strings.my_any?('John')
       compare = array_strings.any?('John')
       expect(result).to eq(compare)
     end
-    it 'Checks if returns false if none of the conditions are met' do
+
+    it 'Checks for false if none of the elements in string array matchs all the conditions' do
       result = array_strings.my_any?('Pedro')
       compare = array_strings.any?('Pedro')
       expect(result).to eq(compare)
     end
+
+    it 'Checks true if no blocks or argument is given and at least one element is true' do
+      expect(true_array.my_any?).to eq(true)
+    end
+
+    it 'Checks false if no blocks or argument is given and at least one element is false' do
+      expect(false_array.my_any?).to eq(false)
+    end
+
+    it 'Checks regex for true' do
+      expect(['diego'].my_any?(/di/)).to eq(true)
+    end
+
+    it 'Checks regex for false' do
+      expect(['diego'].my_any?(/li/)).to eq(false)
+    end
   end
 
   describe '#my_none?' do
-    it 'Checks if returns true if none of the conditions are met' do
+    it 'Checks for true if any elements in a integer array exists' do
+      result = array_integers.my_none?(1)
+      expect(result).to eq(false)
+    end
+
+    it 'Checks for false none of elements exists in a integer array' do
+      result = array_integers.my_none?(11)
+      expect(result).to eq(true)
+    end
+
+    it 'Checks if returns true if none of the conditions in strings array are met' do
       result = array_strings.my_none?('Pedro')
       expect(result).to eq(true)
     end
 
-    it 'Checks if returns false if any of the conditions are met' do
+    it 'Checks if returns false if any of the conditions in strings array are met' do
       result = array_strings.my_none?('John')
       expect(result).to eq(false)
+    end
+
+    it 'Checks regex for true' do
+      expect(['diego'].my_none?(/li/)).to eq(true)
+    end
+
+    it 'Checks regex for false' do
+      expect(['diego'].my_none?(/di/)).to eq(false)
     end
   end
 
