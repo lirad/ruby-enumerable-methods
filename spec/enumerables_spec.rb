@@ -171,6 +171,15 @@ describe Enumerable do
       expect(result).to eq(false)
     end
 
+
+    it 'Checks true if no blocks or argument is given and at least one element is true' do
+      expect(true_array.my_none?).to eq(true)
+    end
+
+    it 'Checks false if no blocks or argument is given and at least one element is false' do
+      expect(false_array.my_none?).to eq(false)
+    end
+
     it 'Checks regex for true' do
       expect(['diego'].my_none?(/li/)).to eq(true)
     end

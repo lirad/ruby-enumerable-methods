@@ -67,7 +67,7 @@ module Enumerable
   def my_none?(obj = nil)
     result = true
     if obj.nil? && !block_given?
-      my_each { |i| return !result unless i.nil? || !i }
+      my_each { |i| return !result if i.nil? || !i }
     elsif obj.is_a?(String) && !is_a?(Range)
       my_each { |i| return !result if i.match?(obj) }
     elsif obj.is_a? Integer
