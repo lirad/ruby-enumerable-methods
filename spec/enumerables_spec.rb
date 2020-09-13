@@ -8,6 +8,9 @@ describe Enumerable do
   let(:array_reduced) { 3_628_800 }
   let(:true_array) { [1, true, 'hi', []] }
   let(:false_array) { [1, false, 'hi', []] }
+  let(:false_array_2) { [false, 'hi', []] }
+  let(:range_string) { ('a'..'b') }
+  let(:range_integers) { (1..10) }
   let(:hash) { [{ 'Michael' => 2 }, { 'John' => 3 }] }
   let(:result) { [] }
   let(:compare) { [] }
@@ -78,6 +81,14 @@ describe Enumerable do
       expect(result).to eq(true)
     end
 
+    it 'returns true if all of the range items are member of class given' do
+      expect(range_integers.my_all?(Numeric)).to eq(true)
+    end
+
+    it 'returns false if any of the array items are not member of class given' do
+      expect(range_string.my_all?(Numeric)).to eq(false)
+    end
+
     it 'Checks for false if all elements in a integer arrays matchs all the conditions' do
       result = array_integers.my_all?(array_integers_false)
       expect(result).to eq(false)
@@ -119,6 +130,14 @@ describe Enumerable do
     it 'Checks for false none of elements exists in a integer array' do
       result = array_integers.my_any?(11)
       expect(result).to eq(false)
+    end
+
+    it 'returns true if any of the range items are member of class given' do
+      expect(true_array.my_any?(Numeric)).to eq(true)
+    end
+
+    it 'returns false if none of the array items are a member of class given' do
+      expect(false_array_2.my_any?(Numeric)).to eq(false)
     end
 
     it 'Checks for true if any elements in a string of arrays matchs any of the conditions' do
@@ -166,6 +185,14 @@ describe Enumerable do
       expect(result).to eq(true)
     end
 
+    it 'returns true if none the range items are member of class given' do
+      expect(false_array_2.my_none?(Numeric)).to eq(true)
+    end
+
+    it 'returns false if any of the array items are a member of class given' do
+      expect(true_array.my_none?(Numeric)).to eq(false)
+    end
+
     it 'Checks if returns false if any of the conditions in strings array are met' do
       result = array_strings.my_none?('John')
       expect(result).to eq(false)
@@ -204,13 +231,19 @@ describe Enumerable do
 
   describe '#my_map' do
     proc = proc { |element| element }
+
+    it 'Check if works with procs' do
+      expect(array_integers.my_map(&proc)).to eql(array_integers.map(&proc))
+    end
+
     it 'Check if my map modifies the passed array' do
-      result = array_integers.map { |n| n * 2 }
+      result = array_integers.my_map { |n| n * 2 }
       expect(array_integers).not_to eq(result)
     end
 
-    it 'Check if my_map work with procs' do
-      expect(array_integers.my_map(&proc)).to eql(array_integers)
+    it 'Check if my map modifies the passed array' do
+      result = array_integers.my_map { |n| n * 2 }
+      expect(result).to eq(array_integers.map { |n| n * 2 })
     end
   end
 
