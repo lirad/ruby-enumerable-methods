@@ -85,7 +85,7 @@ describe Enumerable do
 
   describe '#my_all?' do
     it 'Checks for true if all elements in a integer array matchs all the conditions' do
-      result = array_integers.my_all?(array_integers.all?)
+      result = array_integers.my_all?(array_integers)
       expect(result).to eq(true)
     end
 
@@ -97,7 +97,7 @@ describe Enumerable do
       expect(range_string.my_all?(Numeric)).to eq(false)
     end
 
-    it 'Checks for false if all elements in a integer arrays matchs all the conditions' do
+    it 'Checks for false if all elements in a integer arrays doest match all the conditions' do
       result = array_integers.my_all?(array_integers_false)
       expect(result).to eq(false)
     end
