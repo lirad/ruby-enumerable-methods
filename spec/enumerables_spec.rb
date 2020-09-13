@@ -11,6 +11,7 @@ describe Enumerable do
   let(:false_array_2) { [false, 'hi', []] }
   let(:range_string) { ('a'..'b') }
   let(:range_integers) { (1..10) }
+  let(:block) { proc { |x| x * 2 } }
   let(:hash) { [{ 'Michael' => 2 }, { 'John' => 3 }] }
   let(:result) { [] }
   let(:compare) { [] }
@@ -26,6 +27,13 @@ describe Enumerable do
       array_strings.my_each { |n| result << n }
       array_strings.each { |n| compare << n }
       expect(result).to eq(compare)
+    end
+
+    it 'Checks if iterates through the range and executes block' do
+      counter = 0
+      pr = proc { counter += 1 }
+      range_integers.my_each { pr.call }
+      expect(counter).to eq(range_integers.size)
     end
 
     it 'Return every element of a Hash' do
@@ -95,7 +103,7 @@ describe Enumerable do
     end
 
     it 'Checks for true if all elements string arrays matchs all the conditions' do
-      result = array_strings.my_all?(array_strings.all?)
+      result = array_strings.my_all?(array_strings)
       expect(result).to eq(true)
     end
 
@@ -227,6 +235,10 @@ describe Enumerable do
       compare = 1
       expect(result).to eq(compare)
     end
+
+    it 'Check if my_count works passing a block' do
+      expect(range_integers.my_count(&block)).to eq(range_integers.count(&block))
+    end
   end
 
   describe '#my_map' do
@@ -234,6 +246,11 @@ describe Enumerable do
 
     it 'Check if works with procs' do
       expect(array_integers.my_map(&proc)).to eql(array_integers.map(&proc))
+    end
+
+    it 'Checks if a new array is returned after a block is given' do
+      new_array = array_integers.my_map(&block)
+      expect(new_array).not_to eq(array_integers)
     end
 
     it 'Check if my map modifies the passed array' do
