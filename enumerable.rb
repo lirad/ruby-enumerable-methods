@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 module Enumerable
   def my_each(_array = nil)
     return to_enum unless block_given?
@@ -25,48 +24,60 @@ module Enumerable
     my_each do |item|
       result.push(item) if yield(item)
     end
-    puts result
+    result
   end
 
   def my_all?(obj = nil)
-    return false if obj.nil? && !block_given?
-
     result = true
 
-    if obj.nil?
-      my_each { |i| return !result unless yield(i) }
-    elsif obj.is_a? String
-      my_each { |i| return !result unless i.match?(obj) }
+    if obj.nil? && !block_given?
+      my_each { |i| return !result if i.nil? || !i }
+    elsif !obj.nil? && obj.is_a?(Class)
+      my_each { |i| return !result unless i.is_a?(obj) }
     elsif obj.is_a? Integer
       my_each { |i| return !result unless i == obj }
+    elsif !obj.nil? && obj.is_a?(Regexp) || obj.is_a?(String)
+      my_each { |i| return !result unless i.match(obj) }
+    elsif obj.is_a? Array
+      return !result unless obj.sort == sort
+    elsif block_given?
+      my_each { |i| return !result if yield(i) }
     end
     result
   end
 
   def my_any?(obj = nil)
-    return false if obj.nil? && !block_given?
-
     result = false
-    if obj.nil?
-      my_each { |i| return !result if yield(i) }
+    if obj.nil? && !block_given?
+      my_each { |i| return !result if i == true }
+    elsif !obj.nil? && obj.is_a?(Class)
+      my_each { |i| return !result if i.is_a?(obj) }
     elsif obj.is_a? String
       my_each { |i| return !result if obj.match?(i) }
     elsif obj.is_a? Integer
       my_each { |i| return !result if i == obj }
+    elsif !obj.nil? && obj.is_a?(Regexp) || obj.is_a?(String)
+      my_each { |i| return !result if i.match(obj) }
+    elsif block_given?
+      my_each { |i| return !result if yield(i) }
     end
     result
   end
 
   def my_none?(obj = nil)
-    return false if obj.nil? && !block_given?
-
     result = true
-    if obj.nil?
-      my_each { |i| return !result if yield(i) }
+    if obj.nil? && !block_given?
+      my_each { |i| return !result if i.nil? || !i }
+    elsif !obj.nil? && obj.is_a?(Class)
+      my_each { |i| return !result if i.is_a?(obj) }
     elsif obj.is_a?(String) && !is_a?(Range)
       my_each { |i| return !result if i.match?(obj) }
     elsif obj.is_a? Integer
       my_each { |i| return !result if i == obj }
+    elsif !obj.nil? && obj.is_a?(Regexp) || obj.is_a?(String)
+      my_each { |i| return !result if i.match(obj) }
+    elsif block_given?
+      my_each { |i| return !result if yield(i) }
     end
     result
   end
@@ -85,18 +96,16 @@ module Enumerable
     counter
   end
 
-  def my_map(_array = nil)
-    return to_enum unless block_given?
+  def my_map(_obj = nil)
+    return to_enum unless block_given? || proc
 
     new_array = []
-    my_each do |i|
-      new_array.push(yield(i))
-    end
+    proc ? my_each { |i| new_array << proc.call(i) } : my_each { |i| new_array << yield(i) }
     new_array
   end
 
   def my_inject(*obj)
-    raise('LocalJumpError: Block or argument missing!') if !block_given? && obj.nil?
+    raise 'LocalJumpError: Block or argument missing!' if !block_given? && obj[0].nil?
 
     result = Array(self)[0]
 
@@ -122,8 +131,12 @@ module Enumerable
   end
 end
 
-def multiply_els(arr)
-  arr.my_inject(:*)
+class Multiply
+  def initialize; end
+
+  def multiply_els(arr)
+    arr.my_inject(:*)
+  end
 end
 
-# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+# rubocop:enable

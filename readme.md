@@ -34,6 +34,13 @@ To get this project up and running, you must already have ruby installed on your
 6. To change those tests, simply open enumerables.rb in a code editor and modify the values stored in the test_array and test_run variables.
 6. Enjoy sorted arrays of data for the rest of your life.
 
+
+## Testing 
+**To run the tests for all public methods, follow these simple steps:**
+1- Install rspec by runing the following command "gem install rspec "
+2- Navigate to the "spec" folder by running the following command: "cd spec"
+3- Run "rspec"
+
 ## Authors
 
 :bust_in_silhouette: **Diego lirad**
